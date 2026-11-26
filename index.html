@@ -1,0 +1,1015 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#07060d">
+  <title>Nimbus Farm | Cloud iPhone Farm for Instagram Growth</title>
+  <meta name="description" content="A cloud phone farm built on real iPhones. Log in from anywhere, watch your devices work live on Instagram, and see every action and daily stat. No API, no emulators, no Android.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Nimbus Farm | Grow Instagram on real iPhones">
+  <meta property="og:description" content="Real iPhones in our office, controlled from your browser. Watch them live, track daily stats, grow on Instagram.">
+  <meta property="og:image" content="assets/phone-lab.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23ff9a3d'/%3E%3Cstop offset='.5' stop-color='%23ff3d8b'/%3E%3Cstop offset='1' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='9' fill='url(%23g)'/%3E%3Crect x='11' y='6' width='10' height='20' rx='3' fill='none' stroke='%2307060d' stroke-width='2.4'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="preconnect" href="https://i.pravatar.cc">
+  <link rel="preconnect" href="https://picsum.photos">
+
+  <script>document.documentElement.classList.add('js');</script>
+
+  <!-- Tailwind CSS v4 Play CDN (fine for prototyping; compile with the Tailwind CLI for production) -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style type="text/tailwindcss">
+    /* Tokens live in assets/landing.css :root; exposed here as utilities (bg-ink, text-fg-dim, border-line...) */
+    @theme inline {
+      --color-ink: var(--ink);
+      --color-ink-soft: var(--ink-soft);
+      --color-surface: var(--surface);
+      --color-surface-hi: var(--surface-hi);
+      --color-line: var(--line);
+      --color-line-hi: var(--line-hi);
+      --color-fg: var(--fg);
+      --color-fg-soft: var(--fg-soft);
+      --color-fg-dim: var(--fg-dim);
+      --color-fg-faint: var(--fg-faint);
+      --color-pink: var(--pink);
+      --color-orange: var(--orange);
+      --color-violet: var(--violet);
+      --color-cyan: var(--cyan);
+      --color-ok: var(--ok);
+      --color-warn: var(--warn);
+      --color-bad: var(--bad);
+      --color-paper: var(--paper);
+      --color-paper-soft: var(--paper-soft);
+      --color-paper-ink: var(--paper-ink);
+      --color-paper-dim: var(--paper-dim);
+      --color-paper-line: var(--paper-line);
+      --color-ig-blue: var(--ig-blue);
+      --font-display: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    }
+  </style>
+  <link rel="stylesheet" href="assets/landing.css">
+  <noscript><style>html.js .reveal{opacity:1!important;transform:none!important}.rw>span{transform:none!important}</style></noscript>
+
+  <!-- Alpine.js 3: plugins first, then page components, then core (all deferred, executed in order) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+  <script defer src="assets/landing.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body class="font-sans antialiased" x-data>
+  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-lg focus:bg-surface focus:px-4 focus:py-2">Skip to content</a>
+
+  <!-- =====================================================================
+       HEADER (modelled on shadowphone.io: logo chip, centre links, spacer,
+       ghost sign-in, primary CTA, hamburger sheet on small screens)
+       ===================================================================== -->
+  <header x-data="nav" class="nav fixed inset-x-0 top-0 z-50" :class="{ 'is-scrolled': scrolled || open }">
+    <div class="container-x flex h-16 items-center gap-2">
+      <a href="#top" class="mr-3 flex items-center gap-2.5" aria-label="Nimbus Farm home">
+        <span class="logo-chip" x-ic="smartphone:16"></span>
+        <span class="font-display text-[1.08rem] font-extrabold tracking-tight">Nimbus<span class="font-medium text-fg-dim">Farm</span></span>
+      </a>
+
+      <nav class="hidden items-center gap-0.5 lg:flex" aria-label="Primary">
+        <a class="nav-link" href="#features" :aria-current="active === 'features'">Why real iPhones</a>
+        <a class="nav-link" href="#playbooks" :aria-current="active === 'playbooks'">Playbooks</a>
+        <a class="nav-link" href="#dashboard" :aria-current="active === 'dashboard'">Dashboard</a>
+        <a class="nav-link" href="#results" :aria-current="active === 'results'">Results</a>
+        <a class="nav-link" href="#reviews" :aria-current="active === 'reviews'">Reviews</a>
+        <a class="nav-link" href="#pricing" :aria-current="active === 'pricing'">Pricing</a>
+        <a class="nav-link" href="#faq" :aria-current="active === 'faq'">FAQ</a>
+      </nav>
+
+      <div class="flex-1"></div>
+
+      <button type="button" class="nav-link hidden items-center gap-2 2xl:inline-flex" @click="$dispatch('open-palette')" aria-label="Open quick navigation">
+        <span x-ic="search:14"></span><span>Quick jump</span><span class="kbd">Ctrl K</span>
+      </button>
+      <a class="nav-link hidden lg:inline-flex" href="/login">Sign in</a>
+      <a class="btn btn-primary hidden lg:inline-flex" href="/signup" x-magnet>Start free trial</a>
+
+      <button type="button" class="-mr-2 grid h-11 w-11 place-items-center rounded-lg text-fg lg:hidden" @click="open = !open" :aria-expanded="open" aria-controls="mobile-menu" aria-label="Toggle menu">
+        <span x-show="!open" x-ic="menu:22"></span>
+        <span x-show="open" x-cloak x-ic="x:22"></span>
+      </button>
+    </div>
+
+    <div id="mobile-menu" x-show="open" x-cloak x-transition:enter="transition duration-200" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="border-t border-line bg-ink lg:hidden">
+      <nav class="container-x grid gap-1 py-4" aria-label="Mobile">
+        <a class="nav-link !py-3 !text-base" href="#features" @click="go()">Why real iPhones</a>
+        <a class="nav-link !py-3 !text-base" href="#playbooks" @click="go()">Playbooks</a>
+        <a class="nav-link !py-3 !text-base" href="#dashboard" @click="go()">Dashboard</a>
+        <a class="nav-link !py-3 !text-base" href="#results" @click="go()">Results</a>
+        <a class="nav-link !py-3 !text-base" href="#reviews" @click="go()">Reviews</a>
+        <a class="nav-link !py-3 !text-base" href="#pricing" @click="go()">Pricing</a>
+        <a class="nav-link !py-3 !text-base" href="#faq" @click="go()">FAQ</a>
+        <div class="mt-3 grid grid-cols-2 gap-3">
+          <a class="btn btn-ghost" href="/login">Sign in</a>
+          <a class="btn btn-primary" href="/signup">Start free trial</a>
+        </div>
+      </nav>
+    </div>
+    <div class="progress-line" :style="`--p:${p}`" aria-hidden="true"></div>
+  </header>
+
+  <main id="main">
+    <!-- =====================================================================
+         HERO
+         ===================================================================== -->
+    <section id="top" class="hero pb-16 pt-28 sm:pt-32 lg:pb-24" data-spot-root>
+      <div class="aurora" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <canvas class="fx-canvas" aria-hidden="true" x-particles></canvas>
+      <div class="dotgrid" aria-hidden="true"></div>
+      <div class="hero-spot" aria-hidden="true"></div>
+      <div class="fx-layer" aria-hidden="true" x-fx></div>
+
+      <div class="container-x">
+        <div class="mx-auto max-w-4xl text-center">
+          <a href="#lab" class="pill hover:border-fg-faint" x-reveal>
+            <span class="live-dot"></span>
+            Real iPhones · iOS 18 · racked in our office
+            <span x-ic="arrow:12"></span>
+          </a>
+
+          <h1 class="h-hero mt-7">
+            <span class="rw" style="--i:0"><span>Grow</span></span>
+            <span class="rw" style="--i:1"><span>Instagram</span></span>
+            <span class="rw" style="--i:2"><span>on</span></span><br class="hidden sm:block">
+            <span class="rw" style="--i:3"><span class="grad-text">real iPhones.</span></span>
+          </h1>
+
+          <p class="lead mx-auto mt-6 max-w-2xl" x-reveal style="--d:300ms">
+            A cloud phone farm run from our office. Log in from anywhere, watch your iPhones work live, and see every action and daily stat as it happens. No API. No emulators. No Android.
+          </p>
+
+          <p class="eyebrow mt-6 flex flex-wrap items-center justify-center gap-x-3 text-sm sm:text-base" x-reveal style="--d:380ms">
+            <span>On autopilot:</span>
+            <span class="inline-grid rounded-full border border-line-hi bg-surface/60 px-4 py-1.5 text-base font-semibold normal-case tracking-normal text-fg sm:text-lg" x-data="rotator(['follow','like','comment','send DMs','post reels','watch stories'])">
+              <template x-for="(w, k) in words" :key="k">
+                <span class="grad-text text-center transition duration-500 [grid-area:1/1]" :class="i === k ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'" :aria-hidden="i !== k" x-text="w"></span>
+              </template>
+            </span>
+          </p>
+
+          <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row" x-reveal style="--d:460ms">
+            <a href="/signup" class="btn btn-primary btn-lg" x-magnet>Start free trial <span x-ic="arrow:18"></span></a>
+            <a href="#dashboard" class="btn btn-ghost btn-lg"><span x-ic="play:16"></span> See the live dashboard</a>
+          </div>
+          <p class="mt-4 font-mono text-[11px] text-fg-faint" x-reveal style="--d:520ms">3-day trial on 1 iPhone · 14-day money-back guarantee · nothing to install</p>
+
+          <div class="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row" x-reveal style="--d:580ms">
+            <div class="flex -space-x-2.5" aria-hidden="true">
+              <template x-for="n in [12, 47, 33, 5, 15]" :key="n">
+                <img :src="`https://i.pravatar.cc/64?img=${n}`" alt="" width="32" height="32" loading="lazy" class="h-8 w-8 rounded-full border-2 border-ink object-cover">
+              </template>
+            </div>
+            <div class="flex items-center gap-3 text-sm text-fg-dim">
+              <span class="flex gap-0.5 text-ok" aria-hidden="true">
+                <template x-for="n in 5" :key="n"><span x-ic="star:15"></span></template>
+              </span>
+              <span><b class="text-fg">4.8</b> on Trustpilot · 1,240 reviews</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ---------- Live dashboard stage ---------- -->
+        <div class="relative mx-auto mt-12 max-w-[1120px] lg:mt-16" x-data="heroDemo" x-intersect:enter="start()" x-intersect:leave="stop()" x-reveal style="--d:200ms">
+          <div class="win overflow-hidden">
+            <div class="win-bar">
+              <div class="win-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+              <div class="url"><span x-ic="lock:12"></span><span class="truncate">app.nimbusfarm.com/live/A-07</span></div>
+              <div class="hidden items-center gap-2 text-xs text-fg-dim sm:flex"><span class="live-dot ok"></span> 24 online</div>
+            </div>
+
+            <div class="grid lg:grid-cols-[230px_minmax(0,1fr)_330px]">
+              <!-- Fleet -->
+              <aside class="hidden border-r border-line p-4 lg:block" aria-label="Fleet">
+                <p class="eyebrow mb-3">Your fleet</p>
+                <ul class="grid gap-1.5 text-sm">
+                  <li class="flex items-center gap-3 rounded-xl border border-line-hi bg-surface-hi px-3 py-2.5">
+                    <span class="live-dot"></span>
+                    <span class="min-w-0"><span class="block truncate font-medium">iPhone 15 Pro</span><span class="block truncate font-mono text-[10.5px] text-fg-dim">A-07 · @nova.studio</span></span>
+                    <span class="tag cyan ml-auto">LIVE</span>
+                  </li>
+                  <li class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-fg-dim"><span class="live-dot ok"></span><span class="min-w-0"><span class="block truncate text-fg-soft">iPhone 15</span><span class="block truncate font-mono text-[10.5px]">A-08 · @atelier.lune</span></span><span class="tag ok ml-auto">RUN</span></li>
+                  <li class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-fg-dim"><span class="live-dot ok"></span><span class="min-w-0"><span class="block truncate text-fg-soft">iPhone 14 Pro</span><span class="block truncate font-mono text-[10.5px]">A-03 · @coach.marcus</span></span><span class="tag ok ml-auto">RUN</span></li>
+                  <li class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-fg-dim"><span class="h-2 w-2 flex-none rounded-full bg-fg-faint"></span><span class="min-w-0"><span class="block truncate text-fg-soft">iPhone 14</span><span class="block truncate font-mono text-[10.5px]">B-12 · @brewhaus.local</span></span><span class="tag ml-auto !bg-line !text-fg-dim">IDLE</span></li>
+                  <li class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-fg-dim"><span class="live-dot ok"></span><span class="min-w-0"><span class="block truncate text-fg-soft">iPhone 13</span><span class="block truncate font-mono text-[10.5px]">B-02 · @pixel.petals</span></span><span class="tag ok ml-auto">RUN</span></li>
+                </ul>
+                <p class="mt-3 px-3 font-mono text-[11px] text-fg-faint">+ 19 more devices</p>
+              </aside>
+
+              <!-- Live phone -->
+              <div class="stage flex flex-col items-center px-4 py-6 sm:py-8">
+                <div class="mb-5 flex w-full flex-wrap items-center justify-between gap-2 px-1">
+                  <div class="flex items-center gap-2.5"><span class="pill"><span class="live-dot"></span>LIVE</span><span class="text-sm text-fg-soft">iPhone 15 Pro · Rack A-07</span></div>
+                  <div class="font-mono text-xs text-fg-dim"><span x-text="latency"></span> ms · streaming</div>
+                </div>
+
+                <div class="iphone" style="--z:.92" role="img" aria-label="Live view of an iPhone running Instagram: liking a post, following an account, viewing stories, sending a DM and posting a reel">
+                  <div class="screen">
+                    <div class="island"></div>
+                    <div class="statusbar" :class="scene === 'story' && 'light'">
+                      <span>9:41</span>
+                      <span class="flex items-center gap-1.5">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="4" rx=".8"/><rect x="4.5" y="5" width="3" height="6" rx=".8"/><rect x="9" y="2.5" width="3" height="8.5" rx=".8"/><rect x="13.5" y="0" width="3" height="11" rx=".8"/></svg>
+                        <svg width="22" height="11" viewBox="0 0 22 11" fill="none" stroke="currentColor" aria-hidden="true"><rect x=".5" y=".5" width="18" height="10" rx="3"/><rect x="2" y="2" width="14" height="7" rx="1.6" fill="currentColor" stroke="none"/><path d="M20.5 3.8v3.4" stroke-linecap="round"/></svg>
+                      </span>
+                    </div>
+
+                    <!-- FEED -->
+                    <div class="scr" :class="{ on: scene === 'feed' }">
+                      <div class="ig-top"><span class="ig-word">Instagram</span><span class="ig-icons"><span x-ic="heart:22"></span><span x-ic="send:22"></span></span></div>
+                      <div class="ig-stories">
+                        <template x-for="(s, k) in ['Your story','quiet.tide','orbit.daily','neon.brief','sunset.pulse']" :key="k">
+                          <div class="story-b"><div class="ring" :class="k === 0 && 'seen'"><img :src="`https://i.pravatar.cc/80?img=${[1, 20, 32, 41, 56][k]}`" alt="" loading="lazy"></div><span class="max-w-full truncate" x-text="s"></span></div>
+                        </template>
+                      </div>
+                      <div class="post-h"><span class="av"><img src="https://i.pravatar.cc/80?img=45" alt="" loading="lazy"></span><span>maya.frames</span><span class="ml-auto" x-ic="dots:18"></span></div>
+                      <div class="post-img">
+                        <img src="https://picsum.photos/seed/nf-golden/600/600" alt="" loading="lazy">
+                        <div class="heart-burst" x-show="burst" x-transition.opacity.duration.200ms x-cloak><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></div>
+                      </div>
+                      <div class="post-actions"><span class="heart-btn" :class="{ liked }" x-ic="heart:22"></span><span x-ic="message:22"></span><span x-ic="send:22"></span><span class="sp"></span><span x-ic="bookmark:22"></span></div>
+                      <p class="px-3 text-[12px] font-semibold"><span x-text="NF.fmt(likes)"></span> likes</p>
+                      <p class="px-3 text-[12px]"><b>maya.frames</b> Golden hour never misses.</p>
+                    </div>
+
+                    <!-- PROFILE -->
+                    <div class="scr" :class="{ on: scene === 'profile' }">
+                      <div class="ig-top"><span class="inline-flex items-center gap-2"><span x-ic="back:20"></span><b class="text-[15px]">quiet.tide</b></span><span x-ic="dots:20"></span></div>
+                      <div class="flex items-center gap-5 px-4 pt-1.5">
+                        <div class="ring !h-[72px] !w-[72px]"><img src="https://i.pravatar.cc/120?img=20" alt="" loading="lazy"></div>
+                        <div class="grid flex-1 grid-cols-3 text-center"><div><b class="block text-[14px]">284</b><span class="text-[10.5px] text-paper-dim">posts</span></div><div><b class="block text-[14px]" x-text="NF.fmt(followers)"></b><span class="text-[10.5px] text-paper-dim">followers</span></div><div><b class="block text-[14px]">412</b><span class="text-[10.5px] text-paper-dim">following</span></div></div>
+                      </div>
+                      <div class="mt-2 px-4 text-[12px] leading-4"><b>Quiet Tide Studio</b><br>Slow design for loud brands.<br><span class="text-ig-blue">quiettide.co</span></div>
+                      <div class="mt-3 flex gap-2 px-4"><div class="prof-btn primary" :class="{ done: followed }" x-text="followed ? 'Following' : 'Follow'"></div><div class="prof-btn sec">Message</div></div>
+                      <div class="grid3 mt-4">
+                        <template x-for="n in 9" :key="n"><img :src="`https://picsum.photos/seed/nf-grid${n}/200/200`" alt="" loading="lazy"></template>
+                      </div>
+                    </div>
+
+                    <!-- STORY -->
+                    <div class="scr" :class="{ on: scene === 'story' }">
+                      <div class="story-full">
+                        <img src="https://picsum.photos/seed/nf-story/560/1200" alt="" loading="lazy">
+                        <div class="segs">
+                          <template x-for="n in 3" :key="n"><div class="seg" :class="{ run: seg === n - 1 && scene === 'story', done: seg > n - 1 }"><i></i></div></template>
+                        </div>
+                        <div class="absolute left-3 right-3 top-[62px] z-[5] flex items-center gap-2 text-[12px] font-semibold text-paper"><span class="av"><img src="https://i.pravatar.cc/80?img=32" alt="" loading="lazy"></span>orbit.daily <span class="font-normal opacity-70">2h</span></div>
+                        <div class="absolute bottom-6 left-3 right-3 z-[5] flex items-center gap-3 text-paper"><div class="flex h-10 flex-1 items-center rounded-full border border-paper/60 px-4 text-[12px] opacity-90">Send message</div><span x-ic="heart:24"></span><span x-ic="send:22"></span></div>
+                      </div>
+                    </div>
+
+                    <!-- DM -->
+                    <div class="scr" :class="{ on: scene === 'dm' }">
+                      <div class="ig-top !items-end !pb-2.5"><span class="inline-flex items-center gap-2"><span x-ic="back:20"></span><span class="av"><img src="https://i.pravatar.cc/80?img=41" alt="" loading="lazy"></span><span class="leading-3"><b class="block text-[12px]">neon.brief</b><span class="text-[10px] text-paper-dim">Active now</span></span></span><span x-ic="dots:20"></span></div>
+                      <div class="flex flex-col gap-2 border-t border-paper-line px-3 pt-3">
+                        <p class="text-center text-[10px] text-paper-dim">Today 9:41 AM</p>
+                        <div x-show="typing" x-cloak><span class="dots"><i></i><i></i><i></i></span></div>
+                        <template x-for="(m, k) in chat" :key="k"><div class="bubble" :class="m.me ? 'me' : 'them'" x-text="m.text"></div></template>
+                      </div>
+                      <div class="absolute bottom-[22px] left-3 right-3 flex h-9 items-center gap-2 rounded-full border border-paper-line px-3 text-[12px]">
+                        <span class="flex-1 truncate" :class="draft ? '' : 'text-paper-dim'"><span x-text="draft || 'Message...'"></span><span class="caret" x-show="draft" x-cloak></span></span>
+                        <span class="font-semibold text-ig-blue" :class="draft ? 'opacity-100' : 'opacity-40'">Send</span>
+                      </div>
+                    </div>
+
+                    <!-- POST -->
+                    <div class="scr" :class="{ on: scene === 'post' }">
+                      <div class="ig-top"><span class="inline-flex items-center gap-2"><span x-ic="x:20"></span><b class="text-[15px]">New reel</b></span><span class="text-[13px] font-semibold text-ig-blue">Next</span></div>
+                      <div class="px-4">
+                        <div class="relative mx-auto aspect-[9/13] w-[140px] overflow-hidden rounded-xl">
+                          <img src="https://picsum.photos/seed/nf-reel/300/440" alt="" class="h-full w-full object-cover" loading="lazy">
+                          <span class="absolute inset-0 grid place-items-center text-paper" x-ic="play:26"></span>
+                        </div>
+                        <div class="mt-3 min-h-[62px] rounded-xl border border-paper-line p-3 text-[12px]"><span :class="caption ? '' : 'text-paper-dim'" x-text="caption || 'Write a caption...'"></span><span class="caret" x-show="post === 'idle' && caption" x-cloak></span></div>
+                        <div class="mt-2 flex flex-wrap gap-1.5 text-[10.5px]"><span class="rounded-full bg-paper-soft px-2.5 py-1">#goldenhour</span><span class="rounded-full bg-paper-soft px-2.5 py-1">Add location</span><span class="rounded-full bg-paper-soft px-2.5 py-1">Audience: everyone</span></div>
+                      </div>
+                      <div class="absolute bottom-[26px] left-4 right-4 grid gap-2">
+                        <div class="progress-bar" x-show="post !== 'idle'" x-cloak><i :style="post === 'idle' ? '' : 'width:100%'"></i></div>
+                        <div class="grid h-10 place-items-center rounded-lg bg-ig-blue text-[13px] font-semibold text-paper" x-text="post === 'idle' ? 'Share' : post === 'sending' ? 'Sharing...' : 'Shared'"></div>
+                      </div>
+                      <div class="toast-ok absolute left-1/2 top-[56px] z-[35] -translate-x-1/2 rounded-full bg-paper-ink px-3.5 py-1.5 text-[11.5px] font-semibold text-paper" x-show="post === 'done'" x-cloak>Reel shared</div>
+                    </div>
+
+                    <!-- Tab bar -->
+                    <div class="tabbar transition duration-300" :class="scene === 'feed' || scene === 'profile' ? '' : 'translate-y-full opacity-0'">
+                      <span x-ic="home:22"></span><span x-ic="search:22"></span><span x-ic="plussq:22"></span><span x-ic="film:22"></span><span class="av !h-6 !w-6"><img src="https://i.pravatar.cc/60?img=3" alt="" loading="lazy"></span>
+                    </div>
+                    <div class="home-ind"></div>
+
+                    <!-- Taps -->
+                    <template x-for="t in taps" :key="t.id"><span class="tap" :style="`left:${t.x}%;top:${t.y}%`"></span></template>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Today + log -->
+              <aside class="border-t border-line p-5 lg:border-l lg:border-t-0" aria-label="Today's stats and live action log">
+                <div class="flex items-center justify-between"><div><p class="eyebrow">Today</p><p class="text-sm text-fg-soft">@nova.studio</p></div><span class="tag ok">HEALTHY</span></div>
+                <div class="mt-4 grid grid-cols-2 gap-3">
+                  <template x-for="s in [{k:'follows',l:'Follows'},{k:'likes',l:'Likes'},{k:'comments',l:'Comments'},{k:'dms',l:'DMs'}]" :key="s.k">
+                    <div class="stat-tile">
+                      <p class="text-[11px] text-fg-dim" x-text="s.l"></p>
+                      <p class="mt-1 font-display text-2xl font-bold tabular-nums" x-text="stats[s.k]"></p>
+                      <div class="meter mt-2"><i :style="`width:${pct(s.k)}%`"></i></div>
+                      <p class="mt-1.5 font-mono text-[10px] text-fg-faint" x-text="`cap ${caps[s.k]} / day`"></p>
+                    </div>
+                  </template>
+                </div>
+
+                <div class="mt-3 flex items-center justify-between rounded-xl border border-line bg-ink p-3">
+                  <div><p class="text-[11px] text-fg-dim">Followers, 7 days</p><p class="font-display text-lg font-bold">+312 <span class="text-xs font-medium text-ok">today</span></p></div>
+                  <svg viewBox="0 0 120 40" class="h-10 w-28" fill="none" aria-hidden="true"><defs><linearGradient id="spk" x1="0" x2="1"><stop offset="0" style="stop-color:var(--orange)"/><stop offset=".5" style="stop-color:var(--pink)"/><stop offset="1" style="stop-color:var(--violet)"/></linearGradient></defs><path d="M2 32 L20 28 L38 30 L56 20 L74 22 L92 12 L118 4" stroke="url(#spk)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+
+                <div class="mt-5">
+                  <p class="eyebrow mb-1 flex items-center justify-between">Live action log <span class="live-dot"></span></p>
+                  <ul>
+                    <template x-for="l in log" :key="l.id">
+                      <li class="log-line"><span class="text-fg-faint" x-text="l.t"></span><span class="tag" :class="l.cls" x-text="l.tag"></span><span class="truncate text-fg-soft" x-text="l.text"></span></li>
+                    </template>
+                  </ul>
+                </div>
+              </aside>
+            </div>
+          </div>
+
+          <div class="glass float-chip absolute -bottom-7 left-6 hidden items-center gap-3 px-4 py-3 shadow-2xl lg:flex" style="backdrop-filter:blur(10px)">
+            <span class="grid h-9 w-9 place-items-center rounded-xl bg-cyan/15 text-cyan" x-ic="smartphone:18"></span>
+            <div><p class="text-sm font-semibold">Genuine iPhone 15 Pro</p><p class="font-mono text-[10.5px] text-fg-dim">iOS 18.2 · stock, unmodified</p></div>
+          </div>
+          <div class="glass float-chip absolute -bottom-7 right-6 hidden items-center gap-3 px-4 py-3 shadow-2xl lg:flex" style="animation-delay:-3s;backdrop-filter:blur(10px)">
+            <span class="grid h-9 w-9 place-items-center rounded-xl bg-ok/15 text-ok" x-ic="shield:18"></span>
+            <div><p class="text-sm font-semibold">Account health 98 / 100</p><p class="font-mono text-[10.5px] text-fg-dim">Limits respected today</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         MANIFESTO MARQUEE + COUNT-UP STATS (first-scroll hook)
+         ===================================================================== -->
+    <section aria-label="Highlights" class="border-y border-line bg-ink-soft py-5" x-data="{ items: ['Real iPhone hardware','Official Instagram iOS app','No API, no emulators, no Android','Live screen in your browser','Daily stats and action logs','Safety limits per account','Operator support','AES-256 encrypted credentials'] }">
+      <div class="marquee">
+        <div class="marquee-track">
+          <template x-for="g in 2" :key="g">
+            <div class="marquee-group" :aria-hidden="g === 2">
+              <template x-for="t in items" :key="t">
+                <span class="flex items-center gap-3 whitespace-nowrap font-mono text-xs uppercase tracking-[.14em] text-fg-soft"><span class="h-1.5 w-1.5 rotate-45 bg-pink"></span><span x-text="t"></span></span>
+              </template>
+            </div>
+          </template>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Numbers" class="relative py-20 lg:py-24">
+      <div class="container-x">
+        <p class="eyebrow text-center" x-reveal>The numbers behind the farm</p>
+        <div class="mt-10 grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-4">
+          <template x-for="(s, k) in NF.data.stats" :key="k">
+            <div class="text-center" x-data="countUp(s.value, s)" x-intersect.once.threshold.40="run()" x-reveal :style="`--d:${k * 90}ms`">
+              <p class="font-display text-[clamp(2.4rem,5.6vw,4.25rem)] font-extrabold leading-none tracking-tight tabular-nums"><span class="grad-text" x-text="text"></span></p>
+              <p class="mx-auto mt-3 max-w-[16rem] text-sm text-fg-dim" x-text="s.label"></p>
+            </div>
+          </template>
+        </div>
+        <p class="mt-10 text-center font-mono text-[11px] text-fg-faint">Aggregate figures across Nimbus Farm customer accounts, trailing 12 months.</p>
+      </div>
+    </section>
+
+    <div class="divider-glow" aria-hidden="true"></div>
+
+    <!-- =====================================================================
+         WHY REAL iPHONES: signal explorer + comparison table
+         ===================================================================== -->
+    <section id="features" class="py-24 lg:py-32">
+      <div class="container-x">
+        <div class="mx-auto max-w-3xl text-center">
+          <p class="eyebrow" x-reveal>The real-device advantage</p>
+          <h2 class="h-section mt-4" x-reveal style="--d:80ms">Instagram can tell a script from a <span class="grad-text">real iPhone.</span></h2>
+          <p class="lead mt-5" x-reveal style="--d:160ms">API tools fake a device. Emulators imitate one. Android farms patch one. We simply run the official app on genuine, unmodified Apple hardware. Pick an approach and see what Instagram can read.</p>
+        </div>
+
+        <div x-data="signals" class="mt-14 grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)]" x-reveal>
+          <div role="tablist" aria-label="Automation approach" class="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
+            <template x-for="k in keys" :key="k">
+              <button type="button" role="tab" :aria-selected="key === k" @click="key = k" class="rounded-2xl border p-4 text-left transition duration-300" :class="key === k ? 'border-pink/60 bg-surface-hi shadow-[0_0_50px_-20px_var(--pink)]' : 'border-line bg-surface hover:border-line-hi'">
+                <span class="flex items-center justify-between gap-3">
+                  <span class="font-display text-[1.05rem] font-bold" x-text="NF.data.signals[k].label"></span>
+                  <span class="tag" :class="k === 'ios' ? 'ok' : ''" x-text="k === 'ios' ? 'REAL' : 'FAKE'"></span>
+                </span>
+                <span class="mt-1 block text-sm text-fg-dim" x-text="NF.data.signals[k].blurb"></span>
+              </button>
+            </template>
+          </div>
+
+          <div class="spot p-6 sm:p-8" role="tabpanel">
+            <div class="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p class="eyebrow">What Instagram can read</p>
+                <p class="mt-1 font-display text-2xl font-bold" x-text="cur.label"></p>
+              </div>
+              <div class="min-w-[200px]">
+                <p class="text-right font-mono text-xs text-fg-dim"><span class="text-base font-bold text-fg" x-text="score"></span> / 6 look like a real device</p>
+                <div class="meter mt-2 !h-1.5"><i :style="`width:${(score / 6) * 100}%`"></i></div>
+              </div>
+            </div>
+            <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+              <template x-for="r in cur.rows" :key="key + r[0]">
+                <li class="flex items-start gap-3 rounded-2xl border border-line bg-ink p-4">
+                  <span class="mt-0.5 grid h-7 w-7 flex-none place-items-center rounded-full" :class="NF.tone(r[1] === 'bad' ? 'pink' : r[1])">
+                    <span x-show="r[1] === 'ok'" x-ic="check:15"></span>
+                    <span x-show="r[1] === 'warn'" x-ic="minus:15"></span>
+                    <span x-show="r[1] === 'bad'" x-ic="x:15"></span>
+                  </span>
+                  <span class="min-w-0">
+                    <span class="flex items-center gap-2"><span class="text-sm font-semibold" x-text="r[0]"></span><span class="font-mono text-[10px] uppercase tracking-wider" :class="{ 'text-ok': r[1] === 'ok', 'text-warn': r[1] === 'warn', 'text-bad': r[1] === 'bad' }" x-text="label(r[1])"></span></span>
+                    <span class="mt-0.5 block text-sm text-fg-dim" x-text="r[2]"></span>
+                  </span>
+                </li>
+              </template>
+            </ul>
+            <p class="mt-5 text-xs text-fg-faint">Illustrative summary of typical setups in each category. Account outcomes always depend on configuration and use.</p>
+          </div>
+        </div>
+
+        <!-- Comparison table -->
+        <div class="mt-20" x-reveal>
+          <h3 class="font-display text-2xl font-bold sm:text-3xl">Side by side.</h3>
+          <p class="mt-2 max-w-2xl text-fg-dim">Compared by execution architecture across general categories, not specific vendors.</p>
+          <div class="hscroll mt-6 overflow-x-auto rounded-3xl border border-line bg-ink-soft/50 p-2" tabindex="0" aria-label="Comparison table, scrollable">
+            <table class="cmp">
+              <thead>
+                <tr>
+                  <th scope="col" class="eyebrow">Capability</th>
+                  <template x-for="(c, k) in NF.data.compare.cols" :key="k">
+                    <th scope="col" :class="k === 0 ? 'us' : ''">
+                      <span class="font-display text-sm font-bold" :class="k === 0 ? 'text-fg' : 'text-fg-dim'" x-text="c"></span>
+                      <span x-show="k === 0" class="tag mt-2 block w-fit !mx-auto">RECOMMENDED</span>
+                    </th>
+                  </template>
+                </tr>
+              </thead>
+              <tbody>
+                <template x-for="(row, ri) in NF.data.compare.rows" :key="ri">
+                  <tr>
+                    <th scope="row" class="text-sm font-medium text-fg-soft" x-text="row[0]"></th>
+                    <template x-for="(v, ci) in row[1]" :key="ci">
+                      <td :class="ci === 0 ? 'us' : ''">
+                        <span class="inline-grid h-7 w-7 place-items-center rounded-full" :class="NF.tone(v === 'y' ? 'ok' : v === 'p' ? 'warn' : 'pink')">
+                          <span x-show="v === 'y'" x-ic="check:15"></span><span x-show="v === 'p'" x-ic="minus:15"></span><span x-show="v === 'n'" x-ic="x:15"></span>
+                        </span>
+                        <span class="sr-only" x-text="v === 'y' ? 'Yes' : v === 'p' ? 'Partial' : 'No'"></span>
+                      </td>
+                    </template>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </div>
+          <p class="mt-3 font-mono text-[11px] text-fg-faint">Minus sign = partial or varies by tool.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         PLAYBOOKS
+         ===================================================================== -->
+    <section id="playbooks" class="border-y border-line bg-ink-soft py-24 lg:py-32">
+      <div class="container-x">
+        <div class="mx-auto max-w-3xl text-center">
+          <p class="eyebrow" x-reveal>What you are buying</p>
+          <h2 class="h-section mt-4" x-reveal style="--d:80ms">Pre-built playbooks that do the <span class="grad-text">boring part.</span></h2>
+          <p class="lead mt-5" x-reveal style="--d:160ms">Pick a playbook, point it at an account, set the limits. Your dedicated iPhone does the tapping, scrolling and typing inside the real Instagram app.</p>
+        </div>
+
+        <div class="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <template x-for="(p, k) in NF.data.playbooks" :key="p.title">
+            <article class="spot flex flex-col p-6" x-reveal :style="`--d:${(k % 3) * 90}ms`">
+              <span class="grid h-11 w-11 place-items-center rounded-xl" :class="NF.tone(p.tone)" x-html="NF.icon(p.icon, 22)"></span>
+              <h3 class="mt-5 font-display text-xl font-bold" x-text="p.title"></h3>
+              <p class="mt-2 flex-1 text-[.95rem] leading-relaxed text-fg-dim" x-text="p.body"></p>
+              <ol class="mt-5 flex flex-wrap gap-1.5">
+                <template x-for="(s, i) in p.steps" :key="s">
+                  <li class="step-chip" :style="`--k:${i}`"><span class="text-fg-faint" x-text="i + 1"></span><span x-text="s"></span></li>
+                </template>
+              </ol>
+            </article>
+          </template>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         CLOUD DASHBOARD BENTO
+         ===================================================================== -->
+    <section id="dashboard" class="py-24 lg:py-32">
+      <div class="container-x">
+        <div class="mx-auto max-w-3xl text-center">
+          <p class="eyebrow" x-reveal>Cloud console</p>
+          <h2 class="h-section mt-4" x-reveal style="--d:80ms">Log in. Watch your phones. <span class="grad-text">See every move.</span></h2>
+          <p class="lead mt-5" x-reveal style="--d:160ms">Unlike desktop-bound tools, nothing is plugged into your computer. Open the web dashboard from any browser and your iPhones are right there, live.</p>
+        </div>
+
+        <div class="mt-14 grid gap-5 lg:grid-cols-6">
+          <!-- Live view -->
+          <article class="spot overflow-hidden p-6 sm:p-7 lg:col-span-4 lg:row-span-2" x-reveal>
+            <div class="flex items-center gap-2"><span class="live-dot"></span><span class="eyebrow text-cyan">Live view</span></div>
+            <h3 class="mt-3 font-display text-2xl font-bold sm:text-3xl">Watch every iPhone, in real time.</h3>
+            <p class="mt-2 max-w-lg text-[.95rem] text-fg-dim">Stream any device in your fleet, see the exact screen Instagram sees, and step in manually any time. No VPN, no remote-desktop software, no install.</p>
+            <div class="mt-7 grid grid-cols-3 gap-3 sm:grid-cols-6">
+              <template x-for="(m, k) in [{g:'g1',x:52,y:38},{g:'g2',x:40,y:56},{g:'g3',x:60,y:30},{g:'g4',x:48,y:62},{g:'g5',x:55,y:46},{g:'g6',x:36,y:34}]" :key="k">
+                <div class="mini" aria-hidden="true">
+                  <span class="live-tag"><span class="live-dot !h-1.5 !w-1.5"></span>LIVE</span>
+                  <div class="feed" :style="`animation-delay:-${k * 1.7}s`">
+                    <template x-for="n in 4" :key="n">
+                      <div><div class="sk-row"><i class="sk-av"></i><i class="sk-line"></i></div><div class="sk-img" :class="`g${((k + n) % 6) + 1}`"></div></div>
+                    </template>
+                  </div>
+                  <i class="mini-ring" :style="`left:${m.x}%;top:${m.y}%;animation-delay:-${k * 0.7}s`"></i>
+                </div>
+              </template>
+            </div>
+            <dl class="mt-6 grid grid-cols-3 gap-3 text-center">
+              <div class="rounded-2xl border border-line bg-ink p-3"><dt class="font-mono text-[10px] uppercase tracking-wider text-fg-faint">Latency</dt><dd class="mt-1 font-display text-xl font-bold">~110 ms</dd></div>
+              <div class="rounded-2xl border border-line bg-ink p-3"><dt class="font-mono text-[10px] uppercase tracking-wider text-fg-faint">Control</dt><dd class="mt-1 font-display text-xl font-bold">Tap in</dd></div>
+              <div class="rounded-2xl border border-line bg-ink p-3"><dt class="font-mono text-[10px] uppercase tracking-wider text-fg-faint">To install</dt><dd class="mt-1 font-display text-xl font-bold">Nothing</dd></div>
+            </dl>
+          </article>
+
+          <!-- Daily stats -->
+          <article class="spot p-6 lg:col-span-2" x-reveal style="--d:90ms">
+            <div class="flex items-center justify-between"><p class="eyebrow">Daily stats</p><span class="tag ok">+312 today</span></div>
+            <h3 class="mt-3 font-display text-xl font-bold">Followers, last 7 days</h3>
+            <div class="mt-5 flex h-32 items-end gap-2" role="img" aria-label="Bar chart of followers gained per day, rising across the week">
+              <template x-for="(h, k) in [38, 52, 47, 66, 58, 81, 92]" :key="k">
+                <div class="flex h-full flex-1 flex-col items-center justify-end gap-2">
+                  <div class="bar w-full rounded-md" :class="k === 6 ? 'bg-gradient-to-t from-orange via-pink to-violet' : 'bg-line-hi'" :style="`height:${h}%;--d:${k * 80}ms`"></div>
+                  <span class="font-mono text-[10px] text-fg-faint" x-text="'MTWTFSS'[k]"></span>
+                </div>
+              </template>
+            </div>
+          </article>
+
+          <!-- Action log -->
+          <article class="spot overflow-hidden p-6 lg:col-span-2" x-reveal style="--d:140ms" x-data="{ rows: [['LIKE','Liked photo','','09:41:07'],['FOLLOW','Followed @quiet.tide','violet','09:40:52'],['STORY','Viewed 3 stories','ok','09:40:31'],['DM','DM sent · collab-01','orange','09:40:12'],['COMMENT','Commented on reel','cyan','09:39:58'],['POST','Posted reel','ok','09:39:21'],['LIKE','Liked photo','','09:39:02'],['FOLLOW','Followed @orbit.daily','violet','09:38:44']] }">
+            <p class="eyebrow">Action log</p>
+            <h3 class="mt-3 font-display text-xl font-bold">Every tap, timestamped.</h3>
+            <div class="vmarq mt-3" style="height:150px" aria-hidden="true">
+              <div class="vmarq-track" style="animation-duration:26s">
+                <template x-for="g in 2" :key="g">
+                  <div class="vmarq-group !gap-0">
+                    <template x-for="(r, i) in rows" :key="i"><div class="log-line"><span class="text-fg-faint" x-text="r[3]"></span><span class="tag" :class="r[2]" x-text="r[0]"></span><span class="truncate text-fg-soft" x-text="r[1]"></span></div></template>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </article>
+
+          <!-- Safety limits (interactive) -->
+          <article class="spot p-6 sm:p-7 lg:col-span-3" x-reveal x-data="limits">
+            <p class="eyebrow">Safety limits</p>
+            <h3 class="mt-3 font-display text-xl font-bold sm:text-2xl">You set the pace. We never exceed it.</h3>
+            <p class="mt-2 text-sm text-fg-dim">Drag to choose a daily follow cap. Pacing, cooldowns and active hours adjust automatically.</p>
+            <div class="mt-6">
+              <div class="flex items-center justify-between text-sm"><label for="cap" class="text-fg-soft">Daily follow cap</label><span class="font-mono text-lg font-bold" x-text="cap"></span></div>
+              <input id="cap" type="range" min="40" max="400" step="10" x-model.number="cap" class="rng mt-3">
+            </div>
+            <div class="mt-5 grid grid-cols-3 gap-3 text-center">
+              <div class="rounded-2xl border border-line bg-ink p-3"><p class="font-mono text-[10px] uppercase tracking-wider text-fg-faint">One action every</p><p class="mt-1 font-display text-lg font-bold" x-text="every"></p></div>
+              <div class="rounded-2xl border border-line bg-ink p-3"><p class="font-mono text-[10px] uppercase tracking-wider text-fg-faint">Pacing</p><p class="mt-1 font-display text-lg font-bold" :class="tone" x-text="mode"></p></div>
+              <div class="rounded-2xl border border-line bg-ink p-3"><p class="font-mono text-[10px] uppercase tracking-wider text-fg-faint">Active hours</p><p class="mt-1 font-display text-lg font-bold">14 h / day</p></div>
+            </div>
+          </article>
+
+          <!-- Health -->
+          <article class="spot p-6 sm:p-7 lg:col-span-3" x-reveal style="--d:90ms">
+            <p class="eyebrow">Account health and alerts</p>
+            <div class="mt-4 flex items-center gap-6">
+              <div class="relative h-28 w-28 flex-none">
+                <svg viewBox="0 0 88 88" class="h-full w-full -rotate-90" aria-hidden="true">
+                  <circle cx="44" cy="44" r="36" fill="none" stroke-width="8" style="stroke:var(--line)"/>
+                  <circle cx="44" cy="44" r="36" fill="none" stroke-width="8" stroke-linecap="round" stroke-dasharray="217 226" style="stroke:var(--ok)"/>
+                </svg>
+                <div class="absolute inset-0 grid place-items-center text-center"><div><p class="font-display text-3xl font-extrabold leading-none">96</p><p class="font-mono text-[10px] text-fg-faint">/ 100</p></div></div>
+              </div>
+              <ul class="grid flex-1 gap-2.5 text-sm">
+                <li class="flex items-start gap-2.5"><span class="mt-0.5 text-ok" x-ic="check:16"></span><span class="text-fg-soft">12 of 12 accounts healthy</span></li>
+                <li class="flex items-start gap-2.5"><span class="mt-0.5 text-warn" x-ic="activity:16"></span><span class="text-fg-soft">1 challenge detected, run paused automatically</span></li>
+                <li class="flex items-start gap-2.5"><span class="mt-0.5 text-cyan" x-ic="zap:16"></span><span class="text-fg-soft">Alerts by email and push</span></li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         HOW IT WORKS: left sticky list / right swap
+         ===================================================================== -->
+    <section id="how" class="border-y border-line bg-ink-soft py-24 lg:py-32" x-data="steps">
+      <div class="container-x">
+        <div class="max-w-2xl">
+          <p class="eyebrow" x-reveal>How it works</p>
+          <h2 class="h-section mt-4" x-reveal style="--d:80ms">From sign-up to your first live run in <span class="grad-text">under a day.</span></h2>
+        </div>
+
+        <div class="mt-14 flex flex-col gap-10 lg:grid lg:grid-cols-2 lg:gap-20">
+          <ol class="order-2 grid gap-2 lg:order-1 lg:gap-0" role="list">
+            <template x-for="(s, k) in NF.data.steps" :key="s.n">
+              <li class="step-row flex cursor-pointer items-center border-l-2 py-8 pl-5 transition duration-500 sm:py-10 min-h-[min(420px,68vh)] lg:min-h-[52vh]" :data-step="k" :class="step === k ? 'border-pink opacity-100' : 'border-transparent opacity-45 lg:opacity-35'" @click="go(k)" @keydown.enter.prevent="go(k)" tabindex="0" :aria-current="step === k ? 'step' : false">
+                <div>
+                  <span class="step-dot inline-grid h-11 w-11 place-items-center rounded-full border font-mono text-sm" :class="step === k ? 'border-pink bg-pink/15 text-pink scale-110' : 'border-line-hi text-fg-dim'" x-text="s.n"></span>
+                  <h3 class="mt-5 font-display text-2xl font-bold sm:text-3xl" x-text="s.title"></h3>
+                  <p class="mt-3 max-w-md text-fg-dim" x-text="s.body"></p>
+                </div>
+              </li>
+            </template>
+          </ol>
+
+          <div class="order-1 lg:order-2">
+            <div class="sticky top-[4.75rem] z-10 h-[min(380px,52vh)] lg:top-28 lg:h-[min(540px,72vh)]">
+              <div class="spot relative h-full overflow-hidden p-5 sm:p-7" aria-label="Step preview">
+                <div class="absolute inset-0" style="background:radial-gradient(60% 50% at 70% 10%,rgb(var(--violet-rgb)/.18),transparent 70%)" aria-hidden="true"></div>
+                <div class="relative z-10 mb-4 flex gap-1.5" role="tablist" aria-label="Steps">
+                  <template x-for="(_, n) in NF.data.steps" :key="n">
+                    <button type="button" class="h-1 flex-1 rounded-full transition duration-300" :class="step === n ? 'bg-pink shadow-[0_0_12px_rgb(var(--pink-rgb)/.65)]' : step > n ? 'bg-pink/40' : 'bg-line-hi'" :aria-label="'Step ' + (n + 1)" :aria-selected="step === n" @click="go(n)"></button>
+                  </template>
+                </div>
+
+                <!-- 0: choose iPhones -->
+                <div class="absolute inset-x-0 bottom-0 top-9 overflow-y-auto p-5 sm:p-7" x-show="step === 0" x-transition:enter="transition duration-500" x-transition:enter-start="opacity-0 translate-y-5" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+                  <p class="eyebrow">Choose devices</p>
+                  <div class="mt-5 grid grid-cols-2 gap-3">
+                    <template x-for="(d, i) in [['iPhone 15 Pro','A-07',1],['iPhone 15','A-08',1],['iPhone 14 Pro','A-03',1],['iPhone 14','B-12',0],['iPhone 13','B-02',0],['iPhone 13 mini','B-05',0]]" :key="i">
+                      <div class="flex items-center gap-3 rounded-2xl border p-4" :class="d[2] ? 'border-pink/60 bg-pink/10' : 'border-line bg-ink'">
+                        <span class="grid h-10 w-10 place-items-center rounded-xl" :class="d[2] ? 'bg-pink/20 text-pink' : 'bg-surface-hi text-fg-dim'" x-ic="smartphone:20"></span>
+                        <span class="min-w-0 text-sm"><span class="block font-semibold" x-text="d[0]"></span><span class="font-mono text-[11px] text-fg-dim" x-text="'Rack ' + d[1]"></span></span>
+                        <span class="ml-auto text-pink" x-show="d[2]" x-ic="check:18"></span>
+                      </div>
+                    </template>
+                  </div>
+                  <div class="mt-5 flex items-center justify-between rounded-2xl border border-line bg-ink p-4 text-sm"><span class="text-fg-dim">3 dedicated iPhones</span><span class="font-semibold">Ready in minutes</span></div>
+                </div>
+
+                <!-- 1: connect accounts -->
+                <div class="absolute inset-x-0 bottom-0 top-9 overflow-y-auto p-5 sm:p-7" x-show="step === 1" x-cloak x-transition:enter="transition duration-500" x-transition:enter-start="opacity-0 translate-y-5" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+                  <p class="eyebrow">Connect accounts</p>
+                  <ul class="mt-5 grid gap-3">
+                    <template x-for="(a, i) in [['nova.studio','A-07',20],['atelier.lune','A-08',32],['coach.marcus','A-03',41],['brewhaus.local','B-12',56]]" :key="i">
+                      <li class="flex items-center gap-3 rounded-2xl border border-line bg-ink p-3.5">
+                        <img :src="`https://i.pravatar.cc/80?img=${a[2]}`" alt="" class="h-10 w-10 rounded-full object-cover" loading="lazy">
+                        <span class="min-w-0 text-sm"><span class="block font-semibold" x-text="'@' + a[0]"></span><span class="font-mono text-[11px] text-fg-dim" x-text="'bound to ' + a[1]"></span></span>
+                        <span class="ml-auto inline-flex items-center gap-1.5 rounded-full bg-ok/10 px-2.5 py-1 font-mono text-[10px] text-ok"><span x-ic="lock:11"></span>ENCRYPTED</span>
+                      </li>
+                    </template>
+                  </ul>
+                  <div class="mt-3 rounded-2xl border border-dashed border-line-hi p-3.5 text-center text-sm text-fg-dim">+ Add another account</div>
+                </div>
+
+                <!-- 2: playbooks + limits -->
+                <div class="absolute inset-x-0 bottom-0 top-9 overflow-y-auto p-5 sm:p-7" x-show="step === 2" x-cloak x-transition:enter="transition duration-500" x-transition:enter-start="opacity-0 translate-y-5" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+                  <p class="eyebrow">Playbooks and limits</p>
+                  <ul class="mt-5 grid gap-3">
+                    <template x-for="(p, i) in [['Auto Poster',1,'3 posts / day'],['Smart Engagement',1,'800 likes / day'],['Follow & Unfollow',1,'150 follows / day'],['DM Outreach',0,'Off']]" :key="i">
+                      <li class="flex items-center gap-3 rounded-2xl border border-line bg-ink p-4">
+                        <span class="min-w-0 text-sm"><span class="block font-semibold" x-text="p[0]"></span><span class="font-mono text-[11px] text-fg-dim" x-text="p[2]"></span></span>
+                        <span class="switch ml-auto" :class="p[1] ? 'on' : ''"></span>
+                      </li>
+                    </template>
+                  </ul>
+                  <div class="mt-4 flex items-center gap-2 rounded-2xl border border-ok/30 bg-ok/10 p-3.5 text-sm text-ok"><span x-ic="shield:18"></span>Setup reviewed by a Nimbus operator</div>
+                </div>
+
+                <!-- 3: watch live -->
+                <div class="absolute inset-x-0 bottom-0 top-9 overflow-y-auto p-5 sm:p-7" x-show="step === 3" x-cloak x-transition:enter="transition duration-500" x-transition:enter-start="opacity-0 translate-y-5" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+                  <p class="eyebrow flex items-center gap-2"><span class="live-dot"></span>Live now</p>
+                  <div class="mt-5 grid grid-cols-3 gap-3">
+                    <template x-for="(m, k) in [{g:'g1',x:50,y:40},{g:'g3',x:42,y:58},{g:'g2',x:58,y:34}]" :key="k">
+                      <div class="mini">
+                        <span class="live-tag"><span class="live-dot !h-1.5 !w-1.5"></span>LIVE</span>
+                        <div class="feed" :style="`animation-delay:-${k * 2.3}s`">
+                          <template x-for="n in 4" :key="n"><div><div class="sk-row"><i class="sk-av"></i><i class="sk-line"></i></div><div class="sk-img" :class="`g${((k * 2 + n) % 6) + 1}`"></div></div></template>
+                        </div>
+                        <i class="mini-ring" :style="`left:${m.x}%;top:${m.y}%;animation-delay:-${k * 1.1}s`"></i>
+                      </div>
+                    </template>
+                  </div>
+                  <ul class="mt-4 rounded-2xl border border-line bg-ink px-4 py-1">
+                    <li class="log-line"><span class="text-fg-faint">09:41:07</span><span class="tag">LIKE</span><span class="text-fg-soft">Liked photo · @maya.frames</span></li>
+                    <li class="log-line"><span class="text-fg-faint">09:40:52</span><span class="tag violet">FOLLOW</span><span class="text-fg-soft">Followed @quiet.tide</span></li>
+                    <li class="log-line"><span class="text-fg-faint">09:40:31</span><span class="tag ok">STORY</span><span class="text-fg-soft">Viewed 3 stories</span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         RESULTS: interactive growth chart
+         ===================================================================== -->
+    <section id="results" class="py-24 lg:py-32">
+      <div class="container-x">
+        <div class="mx-auto max-w-3xl text-center">
+          <p class="eyebrow" x-reveal>Growth results</p>
+          <h2 class="h-section mt-4" x-reveal style="--d:80ms">Real accounts. Real growth. <span class="grad-text">Day by day.</span></h2>
+          <p class="lead mt-5" x-reveal style="--d:160ms">Three customer accounts, first 90 days on Nimbus. Hover the chart to scrub through the timeline.</p>
+        </div>
+
+        <div x-data="growth" class="mt-14 grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)]" x-reveal>
+          <div role="tablist" aria-label="Case studies" class="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+            <template x-for="(cs, n) in cases" :key="cs.handle">
+              <button type="button" role="tab" :aria-selected="i === n" @click="pick(n)" class="rounded-2xl border p-4 text-left transition duration-300" :class="i === n ? 'border-pink/60 bg-surface-hi' : 'border-line bg-surface hover:border-line-hi'">
+                <span class="block font-mono text-[11px] uppercase tracking-wider text-fg-dim" x-text="cs.niche"></span>
+                <span class="mt-1 block font-display text-lg font-bold" x-text="cs.handle"></span>
+                <span class="mt-2 flex items-center gap-2 text-sm"><span class="text-fg-dim" x-text="NF.fmt(cs.start) + ' → ' + NF.fmt(cs.end)"></span></span>
+                <span class="mt-2 inline-block rounded-full bg-ok/15 px-2.5 py-0.5 font-mono text-xs text-ok" x-text="'+' + NF.fmt(Math.round((cs.end / cs.start - 1) * 100)) + '%'"></span>
+              </button>
+            </template>
+          </div>
+
+          <div class="spot p-6 sm:p-8">
+            <div class="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p class="eyebrow" x-text="c.niche + ' · ' + c.handle"></p>
+                <p class="mt-2 font-display text-5xl font-extrabold tabular-nums"><span class="grad-text" x-text="NF.fmt(c.series[cur])"></span></p>
+                <p class="mt-1 text-sm text-fg-dim">followers · <span class="font-mono" x-text="'day ' + cur + ' of 90'"></span></p>
+              </div>
+              <div class="text-right"><p class="font-display text-3xl font-bold text-ok" x-text="'+' + NF.fmt(gain) + '%'"></p><p class="font-mono text-[11px] text-fg-dim">in 90 days</p></div>
+            </div>
+
+            <svg :viewBox="`0 0 ${W} ${H}`" class="mt-6 h-auto w-full cursor-crosshair touch-pan-y" @pointermove="move($event)" @pointerleave="hover = null" role="img" :aria-label="`Follower growth for ${c.handle} from ${NF.fmt(c.start)} to ${NF.fmt(c.end)} over 90 days`">
+              <defs>
+                <linearGradient id="gs" x1="0" x2="1"><stop offset="0" style="stop-color:var(--orange)"/><stop offset=".5" style="stop-color:var(--pink)"/><stop offset="1" style="stop-color:var(--violet)"/></linearGradient>
+                <linearGradient id="ga" x1="0" x2="0" y1="0" y2="1"><stop offset="0" style="stop-color:var(--pink);stop-opacity:.32"/><stop offset="1" style="stop-color:var(--violet);stop-opacity:0"/></linearGradient>
+              </defs>
+              <g style="stroke:var(--line)" stroke-dasharray="3 6" aria-hidden="true">
+                <line x1="0" y1="52" x2="640" y2="52"/><line x1="0" y1="112" x2="640" y2="112"/><line x1="0" y1="172" x2="640" y2="172"/><line x1="0" y1="232" x2="640" y2="232"/>
+              </g>
+              <path :d="area" fill="url(#ga)" class="area" :class="{ go }"/>
+              <path :d="d" pathLength="1" fill="none" stroke="url(#gs)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" class="draw" :class="{ go }"/>
+              <g x-show="go" x-cloak>
+                <line :x1="x(cur)" y1="0" :x2="x(cur)" :y2="H" style="stroke:var(--line-hi)" stroke-dasharray="2 4" x-show="hover !== null"/>
+                <circle :cx="x(cur)" :cy="y(c.series[cur])" r="9" style="fill:var(--pink);opacity:.25"/>
+                <circle :cx="x(cur)" :cy="y(c.series[cur])" r="4.5" style="fill:var(--fg)"/>
+              </g>
+            </svg>
+            <div class="mt-1 flex justify-between font-mono text-[10px] text-fg-faint"><span>Day 0</span><span>Day 30</span><span>Day 60</span><span>Day 90</span></div>
+
+            <dl class="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <template x-for="k in c.kpis" :key="k[0]">
+                <div class="rounded-2xl border border-line bg-ink p-4"><dt class="font-mono text-[10px] uppercase tracking-wider text-fg-faint" x-text="k[0]"></dt><dd class="mt-1 font-display text-xl font-bold" x-text="k[1]"></dd></div>
+              </template>
+            </dl>
+            <p class="mt-5 text-xs text-fg-faint">Customer results shown with permission. Results vary by niche, account age, content quality and configuration, and are not a guarantee.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         PHONE LAB (our office)
+         ===================================================================== -->
+    <section id="lab" class="border-y border-line bg-ink-soft py-24 lg:py-32">
+      <div class="container-x grid items-center gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="eyebrow" x-reveal>Inside our phone lab</p>
+          <h2 class="h-section mt-4" x-reveal style="--d:80ms">Real iPhones. Racked in <span class="grad-text">our office.</span> Working for you.</h2>
+          <p class="lead mt-5" x-reveal style="--d:160ms">No resellers, no shared pools, no mystery hardware. Every device is owned, powered and monitored by our team in one location.</p>
+          <ul class="mt-8 grid gap-4">
+            <template x-for="(f, k) in [['smartphone','Dedicated device per fleet slot','Your iPhone is yours for the length of your plan.'],['wifi','Network identity per device','Each phone keeps its own stable connection.'],['clock','24/7 health monitoring','Battery, heat and connectivity checked around the clock.'],['headset','Engineers on site','Real people fix issues before you notice them.']]" :key="k">
+              <li class="flex items-start gap-4" x-reveal :style="`--d:${k * 80}ms`">
+                <span class="grid h-10 w-10 flex-none place-items-center rounded-xl bg-surface-hi text-pink" x-html="NF.icon(f[0], 20)"></span>
+                <span><span class="block font-semibold" x-text="f[1]"></span><span class="text-sm text-fg-dim" x-text="f[2]"></span></span>
+              </li>
+            </template>
+          </ul>
+        </div>
+
+        <div class="relative lg:col-span-7" x-reveal style="--d:120ms">
+          <div class="relative overflow-hidden rounded-3xl border border-line-hi shadow-[0_40px_120px_-40px_var(--violet)]">
+            <img src="assets/phone-lab.jpg" alt="A rack of real iPhones, each connected by cable and showing Instagram, in a dark office lab with a technician at a desk" class="lab-img aspect-video w-full object-cover" loading="lazy">
+            <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(180deg,transparent 55%,rgb(var(--ink-rgb)/.85))"></div>
+            <div class="glass float-chip absolute left-4 top-4 flex items-center gap-2.5 px-3.5 py-2.5 text-sm" style="backdrop-filter:blur(8px)"><span class="live-dot ok"></span><span><b>Rack A</b> <span class="text-fg-dim">24 / 24 online</span></span></div>
+            <div class="glass float-chip absolute bottom-4 left-4 flex items-center gap-2.5 px-3.5 py-2.5 text-sm" style="animation-delay:-2s;backdrop-filter:blur(8px)"><span class="text-ok" x-ic="battery:18"></span><span class="text-fg-soft">Avg. battery <b class="text-fg">87%</b></span></div>
+            <div class="glass float-chip absolute bottom-4 right-4 hidden items-center gap-2.5 px-3.5 py-2.5 text-sm sm:flex" style="animation-delay:-4s;backdrop-filter:blur(8px)"><span class="text-cyan" x-ic="thermo:18"></span><span class="text-fg-soft">Temp <b class="text-fg">31°C</b></span></div>
+          </div>
+          <p class="mt-3 text-center font-mono text-[11px] text-fg-faint">Illustrative lab image. Replace with photos of your own rack.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         REVIEWS
+         ===================================================================== -->
+    <section id="reviews" class="relative overflow-hidden py-24 lg:py-32">
+      <div class="container-x">
+        <div class="mx-auto max-w-3xl text-center">
+          <p class="eyebrow" x-reveal>Loved by growth teams</p>
+          <h2 class="h-section mt-4" x-reveal style="--d:80ms">Rated <span class="grad-text">4.8 out of 5</span> across the review sites that matter.</h2>
+        </div>
+
+        <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <template x-for="(s, k) in NF.data.sites" :key="s.name">
+            <a :href="s.href" class="spot block p-5" x-reveal :style="`--d:${k * 80}ms`" :aria-label="`${s.name}: ${s.score} out of 5 from ${s.count} reviews`">
+              <div class="flex items-center justify-between gap-2"><span class="font-display text-lg font-bold" x-text="s.name"></span><span class="tag" :class="s.tone === 'ok' ? 'ok' : s.tone" x-text="s.label"></span></div>
+              <div class="mt-4 flex items-end gap-2"><span class="font-display text-5xl font-extrabold leading-none" x-text="s.score.toFixed(1)"></span><span class="pb-1 text-sm text-fg-dim">/ 5</span></div>
+              <div class="mt-3 flex gap-0.5" :class="NF.srcTone(s.name)" aria-hidden="true"><template x-for="n in 5" :key="n"><span x-ic="star:17"></span></template></div>
+              <p class="mt-3 text-xs text-fg-dim">Based on <b class="text-fg-soft" x-text="s.count"></b> reviews</p>
+            </a>
+          </template>
+        </div>
+
+        <!-- Review wall -->
+        <div class="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-3" x-data="{ cols: [0, 1, 2].map(c => NF.data.reviews.filter((_, i) => i % 3 === c)) }">
+          <template x-for="(col, ci) in cols" :key="ci">
+            <div class="vmarq" :class="[ci === 1 ? 'rev' : '', ci === 2 ? 'hidden lg:block' : '', ci === 1 ? 'hidden md:block' : '']">
+              <div class="vmarq-track" :style="`animation-duration:${64 + ci * 9}s`">
+                <template x-for="g in 2" :key="g">
+                  <div class="vmarq-group" :aria-hidden="g === 2">
+                    <template x-for="(r, i) in col" :key="i">
+                      <figure class="spot p-5">
+                        <div class="flex items-center justify-between">
+                          <div class="flex gap-0.5" :class="NF.srcTone(r.src)" role="img" :aria-label="`${r.stars} out of 5 stars`"><template x-for="n in r.stars" :key="n"><span x-ic="star:15"></span></template></div>
+                          <span class="font-mono text-[10px] uppercase tracking-wider text-fg-faint" x-text="r.src"></span>
+                        </div>
+                        <blockquote class="mt-3">
+                          <p class="font-semibold leading-snug" x-text="r.title"></p>
+                          <p class="mt-2 text-sm leading-relaxed text-fg-dim" x-text="r.body"></p>
+                        </blockquote>
+                        <figcaption class="mt-4 flex items-center gap-3">
+                          <img :src="`https://i.pravatar.cc/72?img=${r.img}`" alt="" width="36" height="36" loading="lazy" class="h-9 w-9 rounded-full object-cover">
+                          <span class="min-w-0 text-sm"><span class="block font-medium" x-text="r.name"></span><span class="block truncate text-xs text-fg-dim" x-text="r.role"></span></span>
+                          <span class="ml-auto inline-flex items-center gap-1 text-[10px] text-ok"><span x-ic="check:12"></span>Verified</span>
+                        </figcaption>
+                      </figure>
+                    </template>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         PRICING
+         ===================================================================== -->
+    <section id="pricing" class="border-y border-line bg-ink-soft py-24 lg:py-32" x-data="pricing">
+      <div class="container-x">
+        <div class="mx-auto max-w-3xl text-center">
+          <p class="eyebrow" x-reveal>Pricing</p>
+          <h2 class="h-section mt-4" x-reveal style="--d:80ms">Pick a plan by how many <span class="grad-text">iPhones</span> you run.</h2>
+          <p class="lead mt-5" x-reveal style="--d:160ms">Every plan includes the cloud dashboard, live view, daily stats and operator support. Hosted real iPhones from <span class="text-fg font-medium">$109/mo</span> — pay yearly and save 20%.</p>
+
+          <div class="mt-8 inline-flex items-center gap-1 rounded-full border border-line-hi bg-surface p-1" role="group" aria-label="Billing period" x-reveal style="--d:220ms">
+            <button type="button" class="rounded-full px-4 py-2 text-sm font-medium transition" :class="!yearly ? 'bg-surface-hi text-fg' : 'text-fg-dim hover:text-fg'" :aria-pressed="!yearly" @click="yearly = false">Monthly</button>
+            <button type="button" class="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition" :class="yearly ? 'bg-surface-hi text-fg' : 'text-fg-dim hover:text-fg'" :aria-pressed="yearly" @click="yearly = true">Yearly <span class="tag ok">SAVE 20%</span></button>
+          </div>
+        </div>
+
+        <div class="mt-12 grid items-stretch gap-5 lg:grid-cols-3">
+          <template x-for="(p, k) in NF.data.plans" :key="p.name">
+            <article class="relative flex flex-col rounded-3xl border p-7" :class="p.pop ? 'border-pink/50 bg-surface-hi shadow-[0_0_90px_-30px_var(--pink)]' : 'border-line bg-surface'" x-reveal :style="`--d:${k * 90}ms`">
+              <span x-show="p.pop" class="tag absolute -top-3 left-7 !bg-pink !text-ink">MOST POPULAR</span>
+              <h3 class="font-display text-2xl font-bold" x-text="p.name"></h3>
+              <p class="mt-1 min-h-[2.75rem] text-sm text-fg-dim" x-text="p.blurb"></p>
+              <p class="mt-6 flex items-end gap-1.5"><span class="font-display text-5xl font-extrabold tracking-tight">$<span x-text="NF.fmt(price(p))"></span></span><span class="pb-1.5 text-sm text-fg-dim">/ month</span></p>
+              <p class="mt-1 font-mono text-[11px] text-fg-faint" x-text="yearly ? 'billed yearly' : 'billed monthly'"></p>
+              <div class="mt-6 grid gap-1 rounded-2xl border border-line bg-ink p-4 text-sm"><span class="font-semibold" x-text="p.devices"></span><span class="text-fg-dim" x-text="p.accounts"></span></div>
+              <ul class="mt-6 grid flex-1 gap-3 text-sm">
+                <template x-for="f in p.feats" :key="f"><li class="flex items-start gap-2.5 text-fg-soft"><span class="mt-0.5 text-ok" x-ic="check:16"></span><span x-text="f"></span></li></template>
+              </ul>
+              <a href="/signup" class="btn mt-8" :class="p.pop ? 'btn-primary' : 'btn-ghost'" x-magnet>Start free trial</a>
+            </article>
+          </template>
+        </div>
+
+        <p class="mt-6 text-center text-sm text-fg-dim">Need more than 20 iPhones, or a private rack? <a href="/contact" class="font-medium text-fg underline decoration-pink/60 underline-offset-4 hover:decoration-pink">Talk to us</a>.</p>
+
+        <div class="mt-16">
+          <p class="eyebrow text-center" x-reveal>Included in every plan</p>
+          <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <template x-for="(it, k) in NF.data.included" :key="it[1]">
+              <li class="spot flex items-start gap-3.5 p-5" x-reveal :style="`--d:${(k % 4) * 70}ms`">
+                <span class="grid h-10 w-10 flex-none place-items-center rounded-xl bg-surface-hi text-pink" x-html="NF.icon(it[0], 19)"></span>
+                <span class="text-sm"><span class="block font-semibold" x-text="it[1]"></span><span class="text-fg-dim" x-text="it[2]"></span></span>
+              </li>
+            </template>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         FAQ
+         ===================================================================== -->
+    <section id="faq" class="py-24 lg:py-32">
+      <div class="container-x">
+        <div class="mx-auto max-w-3xl text-center">
+          <p class="eyebrow" x-reveal>FAQ</p>
+          <h2 class="h-section mt-4" x-reveal style="--d:80ms">Questions, answered <span class="grad-text">honestly.</span></h2>
+        </div>
+        <div x-data="{ open: 2 }" class="mx-auto mt-12 max-w-3xl divide-y divide-line border-y border-line" x-reveal>
+          <template x-for="(f, k) in NF.data.faqs" :key="k">
+            <div>
+              <h3>
+                <button type="button" class="flex w-full items-center justify-between gap-6 py-5 text-left text-[1.02rem] font-semibold transition hover:text-pink" @click="open = open === k ? null : k" :aria-expanded="open === k" :aria-controls="'faq-' + k">
+                  <span x-text="f[0]"></span>
+                  <span class="text-fg-dim transition duration-300" :class="open === k ? 'rotate-180 text-pink' : ''" x-ic="chevron:20"></span>
+                </button>
+              </h3>
+              <div :id="'faq-' + k" x-show="open === k" x-collapse><p class="pb-6 leading-relaxed text-fg-dim" x-text="f[1]"></p></div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         FINAL CTA
+         ===================================================================== -->
+    <section class="hero pb-24 pt-8 lg:pb-32" data-spot-root>
+      <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="hero-spot" aria-hidden="true"></div>
+      <div class="container-x">
+        <div class="mx-auto max-w-3xl rounded-[2rem] border border-line-hi bg-surface/60 px-6 py-16 text-center sm:px-12" style="background:color-mix(in srgb,var(--surface) 70%,transparent)" x-reveal>
+          <h2 class="h-section">Put real iPhones to work on your <span class="grad-text">Instagram.</span></h2>
+          <p class="lead mx-auto mt-5 max-w-xl">Start a 3-day trial on a dedicated iPhone. Log in, watch it run live, and decide with real data.</p>
+          <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <a href="/signup" class="btn btn-primary btn-lg" x-magnet>Start free trial <span x-ic="arrow:18"></span></a>
+            <a href="/demo" class="btn btn-ghost btn-lg">Book a live demo</a>
+          </div>
+          <p class="mt-5 font-mono text-[11px] text-fg-faint">14-day money-back guarantee · cancel any time</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =====================================================================
+       FOOTER
+       ===================================================================== -->
+  <footer class="border-t border-line bg-ink-soft pt-16 pb-10">
+    <div class="container-x">
+      <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+        <div>
+          <a href="#top" class="flex items-center gap-2.5" aria-label="Nimbus Farm home"><span class="logo-chip" x-ic="smartphone:16"></span><span class="font-display text-lg font-extrabold">Nimbus<span class="font-medium text-fg-dim">Farm</span></span></a>
+          <p class="mt-4 max-w-xs text-sm leading-relaxed text-fg-dim">A cloud phone farm on real iPhones. Watch your devices live and grow on Instagram from any browser.</p>
+        </div>
+        <nav aria-label="Product"><p class="eyebrow">Product</p><ul class="mt-4 grid gap-2.5 text-sm text-fg-dim"><li><a class="hover:text-fg" href="#features">Why real iPhones</a></li><li><a class="hover:text-fg" href="#playbooks">Playbooks</a></li><li><a class="hover:text-fg" href="#dashboard">Cloud dashboard</a></li><li><a class="hover:text-fg" href="#pricing">Pricing</a></li></ul></nav>
+        <nav aria-label="Resources"><p class="eyebrow">Resources</p><ul class="mt-4 grid gap-2.5 text-sm text-fg-dim"><li><a class="hover:text-fg" href="#results">Case studies</a></li><li><a class="hover:text-fg" href="#reviews">Reviews</a></li><li><a class="hover:text-fg" href="#faq">FAQ</a></li><li><a class="hover:text-fg" href="/docs">Docs</a></li></ul></nav>
+        <nav aria-label="Company"><p class="eyebrow">Company</p><ul class="mt-4 grid gap-2.5 text-sm text-fg-dim"><li><a class="hover:text-fg" href="/contact">Contact</a></li><li><a class="hover:text-fg" href="/terms">Terms</a></li><li><a class="hover:text-fg" href="/privacy">Privacy</a></li><li><a class="hover:text-fg" href="/login">Sign in</a></li></ul></nav>
+      </div>
+
+      <div class="mt-12 flex flex-col gap-3 border-t border-line pt-6 text-xs leading-relaxed text-fg-faint">
+        <p>Nimbus Farm is not affiliated with, endorsed by or sponsored by Instagram or Meta Platforms, Inc. Instagram and iPhone are trademarks of their respective owners. Automating accounts may be restricted by platform terms; you are responsible for how you use the service. Results vary and are not guaranteed.</p>
+        <p>© <span x-data x-text="new Date().getFullYear()"></span> Nimbus Farm. Designed with the <a class="underline decoration-line-hi underline-offset-4 hover:text-fg-dim" href="https://github.com/xiaopu-ai/web-design">web-design</a> spec; motion ideas inspired by <a class="underline decoration-line-hi underline-offset-4 hover:text-fg-dim" href="https://github.com/DavidHDev/vue-bits">vue-bits</a> by DavidHDev (MIT). Psst: press <span class="kbd">Ctrl K</span> or <span class="kbd">/</span> for the secret menu.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =====================================================================
+       COMMAND PALETTE (the easter egg)
+       ===================================================================== -->
+  <div x-data="palette" @keydown.window="onKey($event)" @open-palette.window="toggle(true)">
+    <div x-show="open" x-cloak class="fixed inset-0 z-[100] flex items-start justify-center px-4 pt-[14vh]" role="dialog" aria-modal="true" aria-label="Quick navigation">
+      <div class="absolute inset-0 bg-ink/80" @click="toggle(false)" x-show="open" x-transition.opacity></div>
+      <div class="relative w-full max-w-lg overflow-hidden rounded-2xl border border-line-hi bg-surface shadow-[0_40px_120px_-20px_var(--black)]" x-show="open" x-transition:enter="transition duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition duration-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0 scale-95">
+        <div class="flex items-center gap-3 border-b border-line px-4">
+          <span class="text-fg-dim" x-ic="search:18"></span>
+          <input x-ref="q" x-model="q" @input="idx = 0" type="text" placeholder="Jump to a section..." aria-label="Search sections" class="h-14 w-full bg-transparent text-[.95rem] outline-none placeholder:text-fg-faint" autocomplete="off">
+          <span class="kbd">esc</span>
+        </div>
+        <ul class="max-h-80 overflow-auto p-2" role="listbox">
+          <template x-for="(it, k) in list" :key="it.label">
+            <li role="presentation">
+              <button type="button" role="option" :aria-selected="k === idx" @click="run(it)" @mousemove="idx = k" class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm transition" :class="k === idx ? 'bg-surface-hi text-fg' : 'text-fg-dim'">
+                <span :class="k === idx ? 'text-pink' : ''" x-html="NF.icon(it.ic, 18)"></span><span x-text="it.label"></span>
+                <span class="ml-auto font-mono text-[10px] text-fg-faint" x-show="k === idx">enter</span>
+              </button>
+            </li>
+          </template>
+          <li x-show="!list.length" class="px-3 py-6 text-center text-sm text-fg-dim">Nothing matches that. Even our iPhones are puzzled.</li>
+        </ul>
+        <p class="border-t border-line px-4 py-2.5 font-mono text-[10.5px] text-fg-faint">↑↓ navigate · enter open · you found the secret menu</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
